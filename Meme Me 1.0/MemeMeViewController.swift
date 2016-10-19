@@ -11,7 +11,8 @@ import UIKit
 class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     
-    //IBoutlets
+    //MARK: IBoutlets
+    
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
@@ -21,25 +22,15 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    //Constants
-    let memeTextAttributes = [
-        NSStrokeColorAttributeName : UIColor.black,
-        NSForegroundColorAttributeName : UIColor.white,
-        NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName : -2.0
-        ] as [String : Any]
     
+    //MARK: LifeCycle Methods
     
-    let TOP_TEXTFIELD_DEFAULT_TEXT = "TOP"
-    let BOTTOM_TEXTFIELD_DEFAULT_TEXT = "BOTTOM"
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        setTextFields(textField: topTextField, string: TOP_TEXTFIELD_DEFAULT_TEXT)
-        setTextFields(textField: bottomTextField, string: BOTTOM_TEXTFIELD_DEFAULT_TEXT)
+        setTextFields(textField: topTextField, string: AppModel.defaultTopTextFieldText)
+        setTextFields(textField: bottomTextField, string: AppModel.defaultBottomTextFieldText)
         scrollView.delegate = self;
         scrollView.backgroundColor = UIColor.black
     }
@@ -47,6 +38,16 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        //To Hide Navigation Controller on this Scene
+        self.navigationController?.isNavigationBarHidden = true
+        
+        //To set the font of the textfields if any selected
+        if AppModel.currentFontIndex != -1 {
+            
+            topTextField.font = UIFont(name: AppModel.selectedFont, size: 40)
+            bottomTextField.font = UIFont(name: AppModel.selectedFont, size: 40)
+        }
         
         // if there's an image in the imageView, enable the share button
         if let _ = imagePickerView.image {
@@ -67,13 +68,6 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
-    }
-    
-    
-    func resetTextfieldText(){
-        
-        topTextField.text = TOP_TEXTFIELD_DEFAULT_TEXT
-        bottomTextField.text = BOTTOM_TEXTFIELD_DEFAULT_TEXT
     }
     
     
@@ -105,6 +99,7 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
             imagePickerView.image = image
+            self.view.layoutIfNeeded()
             setZoomScaleForImage(scrollViewSize: scrollView.bounds.size)
             scrollView.zoomScale = scrollView.minimumZoomScale
             centerImage()
@@ -136,6 +131,7 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
+    
     
     // MARK: Keyboard Related Methods and Delegates
     
@@ -194,6 +190,8 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    //MARK: Top Bar Button Actions
+    
     @IBAction func shareAction(_ sender: AnyObject) {
         
         let memedImage = generateMemedImage()
@@ -220,26 +218,32 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func cancelAction(_ sender: AnyObject) {
         
-        if topTextField.isFirstResponder {
+        if imagePickerView.image != nil {
             
-            topTextField.resignFirstResponder()
+            let alert = UIAlertController(title: AppModel.alert.alertTitle , message: AppModel.alert.alertMessage, preferredStyle: .alert)
             
-        }else if bottomTextField.isFirstResponder {
+            let yes = UIAlertAction(title: "Yes", style: .default) { (UIAlertAction) in
+                
+                self.imagePickerView.image = nil
+                self.resetTextfieldText()
+                self.shareButton.isEnabled = false
+            }
             
-            bottomTextField.resignFirstResponder()
+            let no  = UIAlertAction(title: "No", style: .default, handler: nil)
+            
+            alert.addAction(yes)
+            alert.addAction(no)
+            
+            self.present(alert, animated: true, completion: nil)
         }
-        
-        imagePickerView.image = nil
-        resetTextfieldText()
-        shareButton.isEnabled = false
     }
     
-    override var prefersStatusBarHidden: Bool {
-        //Hide Status Bar
-        return true
-    }
+    
+    //MARK: Helper Functions
     
     override func viewWillLayoutSubviews() {
+        
+        self.view.layoutIfNeeded()
         
         setZoomScaleForImage(scrollViewSize: scrollView.bounds.size)
         
@@ -252,15 +256,58 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
+    
+    func resetTextfieldText(){
+        
+        topTextField.text = AppModel.defaultTopTextFieldText
+        bottomTextField.text = AppModel.defaultBottomTextFieldText
+    }
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        //Hide Status Bar
+        return true
+    }
+    
+    
+    //MARK: Pop Animation
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) in
+            
+            self.topTextField.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            self.bottomTextField.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            
+        }) { (UIViewControllerTransitionCoordinatorContext) in
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.topTextField.transform = CGAffineTransform.identity
+                self.bottomTextField.transform = CGAffineTransform.identity
+                
+            })
+        }
+    }
+    
+    
+    @IBAction func setFont(_ sender: AnyObject) {
+        
+        self.performSegue(withIdentifier: AppModel.fontsTableViewSegueIdentifier, sender: nil)
+    }
 }
 
 
 extension MemeMeViewController: UITextFieldDelegate {
     
+    //MARK: UITextField Extention
+    
     func setTextFields(textField: UITextField, string: String) {
         
         //set textview's default behaviour
-        textField.defaultTextAttributes = memeTextAttributes
+        textField.defaultTextAttributes = AppModel.memeTextAttributes
         textField.text = string
         textField.textAlignment = NSTextAlignment.center
         textField.delegate = self;
@@ -270,11 +317,11 @@ extension MemeMeViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         //Erase the default text when editing
-        if textField == topTextField && textField.text == TOP_TEXTFIELD_DEFAULT_TEXT {
+        if textField == topTextField && textField.text == AppModel.defaultTopTextFieldText {
             
             textField.text = ""
             
-        } else if textField == bottomTextField && textField.text == BOTTOM_TEXTFIELD_DEFAULT_TEXT {
+        } else if textField == bottomTextField && textField.text == AppModel.defaultBottomTextFieldText {
             
             textField.text = ""
         }
@@ -305,17 +352,33 @@ extension MemeMeViewController: UITextFieldDelegate {
         //To set default text if textfields text is empty
         if textField == topTextField && textField.text!.isEmpty {
             
-            textField.text = TOP_TEXTFIELD_DEFAULT_TEXT;
+            textField.text = AppModel.defaultTopTextFieldText;
             
         }else if textField == bottomTextField && textField.text!.isEmpty {
             
-            textField.text = BOTTOM_TEXTFIELD_DEFAULT_TEXT;
+            textField.text = AppModel.defaultBottomTextFieldText;
         }
     }
 }
 
 
 extension MemeMeViewController: UIScrollViewDelegate {
+    
+    //MARK: UIScrollView Extention
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        
+       return imagePickerView
+    }
+    
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        
+        centerImage()
+    }
+    
+    
+    //MARK: Set Zoom Scale
     
     func setZoomScaleForImage(scrollViewSize: CGSize) {
         
@@ -334,27 +397,21 @@ extension MemeMeViewController: UIScrollViewDelegate {
         }
     }
     
+    
+    //MARK: Center Image
+    
     func centerImage() {
         
-        if let image = imagePickerView.image {
+        if imagePickerView.image != nil {
             
             let scrollViewSize = scrollView.bounds.size
-            let imageSize = image.size
+            let imageSize = imagePickerView.frame.size
             
-            let horizontalSpace = imageSize.width * scrollView.zoomScale < scrollViewSize.width ? (scrollViewSize.width - imageSize.width * scrollView.zoomScale) / 2 : 0
-            let verticalSpace = imageSize.height * scrollView.zoomScale < scrollViewSize.height ? (scrollViewSize.height - imageSize.height * scrollView.zoomScale) / 2 : 0
+            let horizontalSpace = imageSize.width < scrollViewSize.width ? (scrollViewSize.width - imageSize.width) / 2 : 0
+            let verticalSpace = imageSize.height < scrollViewSize.height ? (scrollViewSize.height - imageSize.height) / 2 : 0
             
             scrollView.contentInset = UIEdgeInsets(top: verticalSpace, left: horizontalSpace, bottom: verticalSpace, right: horizontalSpace)
         }
     }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        
-       return imagePickerView
-    }
-    
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        
-        centerImage()
-    }
+
 }

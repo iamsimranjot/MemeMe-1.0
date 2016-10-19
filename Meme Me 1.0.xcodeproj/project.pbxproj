@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70111ECD1DB6C0C800372E20 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70111ECC1DB6C0C800372E20 /* AppModel.swift */; };
+		70111ED01DB6CF1900372E20 /* FontsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70111ECF1DB6CF1900372E20 /* FontsTableViewController.swift */; };
 		7033732F1DA41721000FB122 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7033732E1DA41721000FB122 /* Meme.swift */; };
 		703373311DA43768000FB122 /* impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 703373301DA43768000FB122 /* impact.ttf */; };
 		70EBDB4E1DA2DE000084AD74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EBDB4D1DA2DE000084AD74 /* AppDelegate.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		70111ECC1DB6C0C800372E20 /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		70111ECF1DB6CF1900372E20 /* FontsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsTableViewController.swift; sourceTree = "<group>"; };
 		7033732E1DA41721000FB122 /* Meme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 		703373301DA43768000FB122 /* impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = impact.ttf; sourceTree = "<group>"; };
 		70EBDB4A1DA2DE000084AD74 /* Meme Me 1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meme Me 1.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +82,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		70111ECE1DB6C31200372E20 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				70EBDB561DA2DE000084AD74 /* LaunchScreen.storyboard */,
+				70EBDB591DA2DE000084AD74 /* Info.plist */,
+				703373301DA43768000FB122 /* impact.ttf */,
+				70111ECC1DB6C0C800372E20 /* AppModel.swift */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		70EBDB411DA2DE000084AD74 = {
 			isa = PBXGroup;
 			children = (
@@ -103,12 +118,11 @@
 			children = (
 				70EBDB4D1DA2DE000084AD74 /* AppDelegate.swift */,
 				70EBDB4F1DA2DE000084AD74 /* MemeMeViewController.swift */,
+				7033732E1DA41721000FB122 /* Meme.swift */,
+				70111ECF1DB6CF1900372E20 /* FontsTableViewController.swift */,
 				70EBDB511DA2DE000084AD74 /* Main.storyboard */,
 				70EBDB541DA2DE000084AD74 /* Assets.xcassets */,
-				703373301DA43768000FB122 /* impact.ttf */,
-				70EBDB561DA2DE000084AD74 /* LaunchScreen.storyboard */,
-				70EBDB591DA2DE000084AD74 /* Info.plist */,
-				7033732E1DA41721000FB122 /* Meme.swift */,
+				70111ECE1DB6C31200372E20 /* Supporting Files */,
 			);
 			path = "Meme Me 1.0";
 			sourceTree = "<group>";
@@ -199,7 +213,8 @@
 				TargetAttributes = {
 					70EBDB491DA2DE000084AD74 = {
 						CreatedOnToolsVersion = 8.0;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = PDHEBC3R4L;
+						ProvisioningStyle = Manual;
 					};
 					70EBDB5D1DA2DE000084AD74 = {
 						CreatedOnToolsVersion = 8.0;
@@ -268,7 +283,9 @@
 			files = (
 				7033732F1DA41721000FB122 /* Meme.swift in Sources */,
 				70EBDB501DA2DE000084AD74 /* MemeMeViewController.swift in Sources */,
+				70111ED01DB6CF1900372E20 /* FontsTableViewController.swift in Sources */,
 				70EBDB4E1DA2DE000084AD74 /* AppDelegate.swift in Sources */,
+				70111ECD1DB6C0C800372E20 /* AppModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,14 +443,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PDHEBC3R4L;
 				INFOPLIST_FILE = "Meme Me 1.0/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "iamchanandlerbong.Meme-Me-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "bdae9bfd-b8a1-4f10-9628-a8cddbb8db79";
+				PROVISIONING_PROFILE_SPECIFIER = WildCard;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -446,7 +463,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Meme Me 1.0/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "iamchanandlerbong.Meme-Me-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
