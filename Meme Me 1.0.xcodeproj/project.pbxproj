@@ -213,8 +213,7 @@
 				TargetAttributes = {
 					70EBDB491DA2DE000084AD74 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = PDHEBC3R4L;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					70EBDB5D1DA2DE000084AD74 = {
 						CreatedOnToolsVersion = 8.0;
@@ -443,14 +442,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = PDHEBC3R4L;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Meme Me 1.0/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "iamchanandlerbong.Meme-Me-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "bdae9bfd-b8a1-4f10-9628-a8cddbb8db79";
-				PROVISIONING_PROFILE_SPECIFIER = WildCard;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -463,7 +462,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Meme Me 1.0/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "iamchanandlerbong.Meme-Me-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
