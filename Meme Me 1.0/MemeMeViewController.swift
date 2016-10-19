@@ -75,20 +75,13 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {
         //To pick an image from Photos Albums
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        self.present(imagePicker, animated: true, completion:nil)
-        
+        presentImagePickerWith(sourceType: UIImagePickerControllerSourceType.photoLibrary)
     }
     
     
     @IBAction func pickAnImageFromCamera (sender: AnyObject) {
         // To take a image directly from camera
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-        present(imagePicker, animated: true, completion: nil)
+        presentImagePickerWith(sourceType: UIImagePickerControllerSourceType.camera)
     }
     
     
@@ -138,7 +131,7 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     func keyboardWillShow(notification: NSNotification) {
         //setting frame of view when keyboard shows
         
-        if bottomTextField.isFirstResponder && self.view.frame.origin.y == 0 {
+        if bottomTextField.isFirstResponder {
             
             self.view.frame.origin.y -= getKeyboardHeight(notification: notification)
         }
@@ -164,8 +157,7 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     // Create a UIImage that combines the Image View and the Textfields
     func generateMemedImage() -> UIImage {
         
-        navBar.isHidden = true
-        toolBar.isHidden = true
+        configureBars(hidden: true)
         
         // render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -173,8 +165,7 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        navBar.isHidden = false
-        toolBar.isHidden = false
+        configureBars(hidden: false)
         
         return memedImage
     }
@@ -257,10 +248,26 @@ class MemeMeViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    func presentImagePickerWith(sourceType: UIImagePickerControllerSourceType){
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        self.present(imagePicker, animated: true, completion:nil)
+    }
+    
+    
     func resetTextfieldText(){
         
         topTextField.text = AppModel.defaultTopTextFieldText
         bottomTextField.text = AppModel.defaultBottomTextFieldText
+    }
+    
+    
+    func configureBars(hidden: Bool) {
+        
+        navBar.isHidden = hidden
+        toolBar.isHidden = hidden
     }
     
     
